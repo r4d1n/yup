@@ -9,10 +9,8 @@ const expected = [
       name: "Joe O.",
       id: "85zUsMUd9sRSnwJ8MzWwlg",
       location: "Miami, FL",
-      friendCount: 10,
-      reviewCount: 105,
-      photoCount: 13,
-      isElite: false
+      review_count: 105,
+      elite_status: false
     },
     review: {
       text: "Decor is beautiful. Simple and clean. The ice coffee, \"New Orleans\" was 10/10.",

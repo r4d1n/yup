@@ -12,6 +12,7 @@ const INIT_URL = "https://www.yelp.com/biz/blue-bottle-coffee-san-francisco-14?o
 function main(err, res, body) {
   if (err) {
     console.error(err);
+    process.exit(1);
   }
 
   let reqUri = res.request.uri.href;
@@ -23,6 +24,18 @@ function main(err, res, body) {
   pLinks.forEach(k => pagination.add(k));
 
   let data = parse(body);
+
+  Promise.all(data.map(object => {
+    return db.saveUser(object.user).then(_ => db.saveReview(object.review));
+  }))
+  .then(_ => {
+    console.log('success!')
+    process.exit(0);
+  })
+  .catch(err => {
+    console.error(err)
+    process.exit(1);
+  });
 
 }
 

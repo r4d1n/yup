@@ -1,10 +1,12 @@
 exports.up = function (knex, Promise) {
   return knex.schema.createTable('users', (table) => {
-    table.integer('id').unsigned().primary();
+    table.string('id').primary();
     table.integer('review_count');
+    table.string('location');
+    table.string('name');
     table.boolean('elite_status');
   }).createTable('reviews', (table) => {
-    table.uuid('id').primary();
+    table.increments('id').primary().unsigned();
     table.text('text');
     table.integer('rating');
     table.integer('date');

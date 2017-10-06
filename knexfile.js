@@ -1,6 +1,6 @@
 module.exports = {
   client: 'sqlite3',
   connection: {
-    filename: "./yelp"
+    filename: "./yelp_data"
   }
 }
