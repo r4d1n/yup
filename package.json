@@ -1,0 +1,21 @@
+{
+  "name": "yup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "knex": "^0.13.0",
+    "lodash": "^4.17.4",
+    "request": "^2.83.0",
+    "sqlite3": "^3.1.13"
+  },
+  "devDependencies": {
+    "jest": "^21.2.1"
+  }
+}
