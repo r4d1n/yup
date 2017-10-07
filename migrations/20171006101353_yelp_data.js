@@ -10,6 +10,8 @@ exports.up = function (knex, Promise) {
     table.text('text');
     table.integer('rating');
     table.integer('date');
+    table.string('business');
+    table.string('hash').unique();
     table.integer('user_id').references('id').inTable('users');
   });
 };

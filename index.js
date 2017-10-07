@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const request = require('request');
 const pagination = require('./lib/pagination');
-const parse = require('./lib/parse');
+const parser = require('./lib/parser');
 
 const db = require('./lib/db');
 
@@ -16,29 +16,35 @@ function main(err, res, body) {
   }
 
   let reqUri = res.request.uri.href;
-
-  console.log('fetching ', reqUri);
-
-  let pLinks = pagination.getLinks(body);
+  console.log('yup scraper: fetching ', reqUri);
   pagination.add(reqUri);
+
+  let pLinks = parser.pages(body);
   pLinks.forEach(k => pagination.add(k));
 
-  let data = parse(body);
+  let data = parser.reviews(body);
+
+  console.log('yup scraper: will save ', reqUri);
 
   Promise.all(data.map(object => {
     return db.saveUser(object.user).then(_ => db.saveReview(object.review));
   }))
-  .then(_ => {
-    console.log('success!')
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error(err)
-    process.exit(1);
-  });
+    .then(_ => {
+      pagination.markDone(reqUri);
+      let next = pagination.next();
+      if (next) {
+        request(next, main);
+      } else { // done
+        console.log('yup scraper: success!')
+        process.exit(0);
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      process.exit(1);
+    });
 
 }
 
 // make the first request
 request(INIT_URL, main);
-
