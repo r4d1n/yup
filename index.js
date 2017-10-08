@@ -30,10 +30,10 @@ function main(err, res, body) {
     return db.saveUser(object.user).then(_ => db.saveReview(object.review));
   }))
     .then(_ => {
-      pagination.markDone(reqUri);
+      pagination.complete(reqUri);
       let next = pagination.next();
       if (next) {
-        request(next, main);
+        request({ url: next, followRedirect: false }, main);
       } else { // done
         console.log('yup scraper: success!')
         process.exit(0);
@@ -47,4 +47,4 @@ function main(err, res, body) {
 }
 
 // make the first request
-request(INIT_URL, main);
+request({ url: INIT_URL, followRedirect: false }, main);
